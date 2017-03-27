@@ -139,6 +139,16 @@ public class UserDaoTest {
     @Test
     public void testLogin() {
 
+        UserDao userDao = mock(UserDao.class);
+        when(userDao.getUsers()).thenReturn(Arrays.asList(
+                new User("Prayuth","1234","Tu",
+                        LocalDate.of(1979,2,14),"08612345678"),
+                new User("Tucky","5675","Tuckung",
+                        LocalDate.of(1999,8,30),"08687654321")
+        ));
+        UserServiceImpl userService = new UserServiceImpl();
+        userService.setUserDao(userDao);
+
     }
 
     @Test
