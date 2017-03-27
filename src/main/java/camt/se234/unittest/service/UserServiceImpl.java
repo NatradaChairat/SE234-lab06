@@ -41,9 +41,9 @@ public class UserServiceImpl {
         if (date.isBefore(user.getDateOfBirth())){
             throw new OldDateException("User is not Born Yet");
         }
-        if(date.isBefore(LocalDate.now())){
+        /*if(date.isBefore(LocalDate.now())){
             throw new OldDateException();
-        }
+        }*/
         return ChronoUnit.YEARS.between(user.getDateOfBirth(),date)>=20;
     }
 

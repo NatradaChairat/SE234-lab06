@@ -4,9 +4,13 @@ import camt.se234.unittest.entity.User;
 import camt.se234.unittest.exception.OldDateException;
 import camt.se234.unittest.exception.OldManException;
 import camt.se234.unittest.service.UserServiceImpl;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import junitparams.naming.TestCaseName;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by CAMT on 27/3/2560.
  */
+@RunWith(JUnitParamsRunner.class)
 public class UserDaoTest {
     @Test
     public void testGetUsers() {
@@ -151,19 +156,29 @@ public class UserDaoTest {
 
     }
 
+    public Object paramsForTestToGoToPubParam(){
+        return new Object[][]{
+                {new User("Prayuth","1234","Tu",
+                        LocalDate.of(2016,12,28),"08612345678"),LocalDate.of(2036,12,29),true},
+                {new User("Prayuth","1234","Tu",
+                        LocalDate.of(2016,12,28),"08612345678"),LocalDate.of(2036,12,28),true},
+                {new User("Prayuth","1234","Tu",
+                        LocalDate.of(2016,12,28),"08612345678"),LocalDate.of(2036,12,27),false},
+                {new User("Prayuth","1234","Tu",
+                        LocalDate.of(2016,12,28),"08612345678"),LocalDate.of(2016,12,29),false}
+        };
+    }
+
     @Test
-    public void testAbleToGoToPub() {
-        /*UserServiceImpl userService = new UserServiceImpl();
-        UserDaoImpl userDao = new UserDaoImpl();
+    @Parameters(method = "paramsForTestToGoToPubParam")
+    @TestCaseName("[{index}] {method}: {params}")
+    public void testAbleToGoToPub(User inputUser,LocalDate date,boolean expected) {
+
+        UserDao userDao = mock(UserDao.class);
+        UserServiceImpl userService = new UserServiceImpl();
         userService.setUserDao(userDao);
+        assertThat(userService.isAbleToGoToPub(inputUser,date),is(expected));
 
-        assertThat(userService.isAbleToGoToPub(new User("Gaanploo", "1111", "Myla",
-                LocalDate.of(1995, 10, 30), "0234567890"), LocalDate.now()), is(true));
-
-        thrown.expect(OldDateException.class);
-        assertThat(userService.isAbleToGoToPub(new User("Bob", "qwerty", "Bob",
-                LocalDate.of(2055, 1, 16), "0004400000"), LocalDate.now()), is(false));
-        */
     }
 
     @Rule
