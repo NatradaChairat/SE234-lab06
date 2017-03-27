@@ -10,6 +10,7 @@ import camt.se234.unittest.exception.OldManException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UserServiceImpl {
@@ -37,13 +38,14 @@ public class UserServiceImpl {
                 .findFirst().orElse(null);
     }
 
+
     public boolean isAbleToGoToPub(User user, LocalDate date){
         if (date.isBefore(user.getDateOfBirth())){
             throw new OldDateException("User is not Born Yet");
         }
-        if(date.isBefore(LocalDate.now())){
+        /*if(date.isBefore(LocalDate.now())){
             throw new OldDateException();
-        }
+        }*/
         return ChronoUnit.YEARS.between(user.getDateOfBirth(),date)>=20;
     }
 
