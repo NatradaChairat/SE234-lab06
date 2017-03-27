@@ -32,7 +32,8 @@ import static org.mockito.Mockito.when;
 public class UserDaoTest {
     @Test
     public void testGetUsers() {
-        /*UserDaoImpl userDao = new UserDaoImpl();
+        UserDaoImpl userDao = new UserDaoImpl();
+        //UserDao userDao = mock(UserDao.class);
         assertThat(userDao.getUsers(),
                 hasItems(new User("Prayuth", "1234", "Tu",
                                 LocalDate.of(1979, 2, 14), "08612345678"),
@@ -120,23 +121,13 @@ public class UserDaoTest {
                         new User("Vathanaka", "3434V", "Chan",
                                 LocalDate.of(1995, 04, 30), "01234348569")
 
-                ));*/
+                ));
 
     }
 
     @Test
     public void testPubAllow() {
-        /*List<User> list = new ArrayList<>();
-        list.add(new User("Prayuth", "1234", "Tu",
-                LocalDate.of(1979, 2, 14), "08612345678"));
 
-        UserServiceImpl userService = new UserServiceImpl();
-        UserDaoImpl userDao = new UserDaoImpl();
-        userService.setUserDao(userDao);
-
-        thrown.expect(OldManException.class);
-        assertThat(userService.getPubAllowanceUser(LocalDate.of(2017, 3, 20)), is(list));
-        */
         /*List<User> list = new ArrayList<>();
         list.add(new User("Prayuth", "1234", "Tu",
                 LocalDate.of(1979, 2, 14), "08612345678"));
@@ -145,10 +136,15 @@ public class UserDaoTest {
         UserServiceImpl userService = new UserServiceImpl();
         userService.setUserDao(userDao);
 
+        when(userDao.getUsers()).thenReturn(Arrays.asList(
+                new User("Prayuth", "1234", "Tu",
+                        LocalDate.of(1979, 2, 14), "08612345678"),
+                new User("Tucky", "5675", "Tuckung",
+                        LocalDate.of(1999, 8, 30), "08687654321")
+        ));
+
         thrown.expect(OldManException.class);
-
-        userService*/
-
+        assertThat(userService.getPubAllowanceUser(LocalDate.of(2017, 3, 20)), is(list));*/
 
     }
 
@@ -163,10 +159,10 @@ public class UserDaoTest {
         ));
         UserServiceImpl userService = new UserServiceImpl();
         userService.setUserDao(userDao);
+
+        assertThat(userService.login("Prayuth","1234"), is(new User("Prayuth", "1234", "Tu",
+                LocalDate.of(1979, 2, 14), "08612345678")));
     }
-
-
-
 
 
     public Object paramsForTestToGoToPubParam() {
@@ -189,7 +185,14 @@ public class UserDaoTest {
         UserDao userDao = mock(UserDao.class);
         UserServiceImpl userService = new UserServiceImpl();
         userService.setUserDao(userDao);
-
+        when(userDao.getUsers()).thenReturn(Arrays.asList(
+                new User("Prayuth", "1234", "Tu",
+                        LocalDate.of(1979, 2, 14), "08612345678"),
+                new User("Tucky", "5675", "Tuckung",
+                        LocalDate.of(1999, 8, 30), "08687654321")
+        ));
+        assertThat(userService.isAbleToGoToPub(new User("Prayuth", "1234", "Tu",
+                LocalDate.of(1979, 2, 14), "08612345678"),LocalDate.now()), is(true));
     }
 
     @Test
@@ -210,18 +213,17 @@ public class UserDaoTest {
 
     @Test
     public void testLoginException () {
-        /*UserServiceImpl userService = new UserServiceImpl();
-        UserDaoImpl userDao = new UserDaoImpl();
+
+        UserDao userDao = mock(UserDao.class);
+        UserServiceImpl userService = new UserServiceImpl();
         userService.setUserDao(userDao);
 
-        // check for the exception we expect
         thrown.expect(NullPointerException.class);
         userService.login("", "");
 
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("User name must not contain special characters");
-        userService.login("abcd*", "1234");*/
-
+        userService.login("abcd*", "1234");
 
     }
 }
