@@ -74,12 +74,16 @@ public class UserDaoImplTest {
         UserDaoImpl userDao = new UserDaoImpl();
         userService.setUserDao(userDao);
         // check for the exception we expect
+
+        //userService.login("","");
+        //userService.login("Prayuth","1234");
+
+
+        assertThat(userService.login("Prayuth","1234"), is(new User("Prayuth","1234","Tu",
+                LocalDate.of(1979,2,14),"08612345678")));
+
+
         thrown.expect(NullPointerException.class);
-        userService.login("","");
-
-
-
-
     }
 
 
